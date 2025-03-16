@@ -20,9 +20,33 @@ class Player(Sprite):
             self.all_images[animation] = image_list
         self.image = self.all_images["Idle"][0]
         self.rect = self.image.get_rect(topleft=(x,y))
+        self.costume_number = 0
+        self.action = "Idle"
+        self.timer = pygame.time.get_ticks()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        self.animation()
+
+    def animation(self):
+        self.image = self.all_images[self.action][self.costume_number]
+        if pygame.time.get_ticks() - self.timer >= 100:# یک دهم ثانیه
+            self.timer = pygame.time.get_ticks()
+            self.costume_number += 1
+            if self.costume_number >= len(self.all_images[self.action]):
+                self.costume_number = 0
+
+    def move(self):
+        dx = 0
+        dy = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            dx -= 5
+        if keys[pygame.K_RIGHT]:
+            dx += 5
+
+        self.rect.x += dx
+        self.rect.y += dy
 
 
 

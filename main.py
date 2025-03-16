@@ -9,15 +9,16 @@ screen = pygame.display.set_mode((width, height))
 fps = 60
 clock = pygame.time.Clock()
 
-# robot = pygame.image.load("./png/Idle/Idle1.png")
-# robot = pygame.transform.scale_by(robot, 0.3)
-# robot_rect = robot.get_rect(topleft=(100, 300))
+my_player = Player(200, 350)
 
 running = True
 while running == True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    screen.fill('lightpink')
+    my_player.move()
+    my_player.draw(screen)
     pygame.display.update()
-    # screen.blit(robot, robot_rect)
+   
     clock.tick(fps)
