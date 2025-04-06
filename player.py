@@ -23,6 +23,7 @@ class Player(Sprite):
         self.costume_number = 0
         self.action = "Idle"
         self.timer = pygame.time.get_ticks()
+        self.idle = True
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -41,12 +42,20 @@ class Player(Sprite):
         dy = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
+            self.idle = False
             dx -= 5
         if keys[pygame.K_RIGHT]:
+            self.idle = False
             dx += 5
 
         self.rect.x += dx
         self.rect.y += dy
 
 
-
+    def change_animation(self, action):
+        if self.action != action:
+            self.action = action
+            self.costume_number = 0
+            self.timer = pygame.time.get_ticks()
+            
+        
