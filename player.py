@@ -24,9 +24,12 @@ class Player(Sprite):
         self.action = "Idle"
         self.timer = pygame.time.get_ticks()
         self.idle = True
+        self.flip = False
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
+        screen.blit(
+            pygame.transform.flip(self.image, self.flip, False), 
+            self.rect)
         self.animation()
 
     def animation(self):
@@ -43,9 +46,11 @@ class Player(Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.idle = False
+            self.flip = True
             dx -= 5
         if keys[pygame.K_RIGHT]:
             self.idle = False
+            self.flip = False
             dx += 5
 
         self.rect.x += dx
