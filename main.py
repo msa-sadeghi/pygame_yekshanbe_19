@@ -17,7 +17,9 @@ while running == True:
         if event.type == pygame.QUIT:
             running = False
     
-    if my_player.idle == True:
+    if my_player.shooting == True:
+        my_player.change_animation("Shoot")
+    elif my_player.idle == True:
         my_player.change_animation("Idle")
     else:
         my_player.change_animation("Run")

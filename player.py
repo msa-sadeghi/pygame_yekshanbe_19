@@ -25,6 +25,7 @@ class Player(Sprite):
         self.timer = pygame.time.get_ticks()
         self.idle = True
         self.flip = False
+        self.shooting = False
 
     def draw(self, screen):
         screen.blit(
@@ -52,7 +53,14 @@ class Player(Sprite):
             self.idle = False
             self.flip = False
             dx += 5
+        if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+            self.idle = True
 
+        if keys[pygame.K_SPACE]:
+            self.shooting = True
+        if not keys[pygame.K_SPACE]:
+            self.shooting = False
+        
         self.rect.x += dx
         self.rect.y += dy
 
