@@ -1,6 +1,7 @@
 from pygame.sprite import Sprite
 import pygame
 import os
+from bullet import Bullet
 class Player(Sprite):
     def __init__(self, x,y):
         super().__init__()
@@ -26,6 +27,7 @@ class Player(Sprite):
         self.idle = True
         self.flip = False
         self.shooting = False
+        self.direction  = 1
 
     def draw(self, screen):
         screen.blit(
@@ -46,10 +48,12 @@ class Player(Sprite):
         dy = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
+            self.direction = -1
             self.idle = False
             self.flip = True
             dx -= 5
         if keys[pygame.K_RIGHT]:
+            self.direction = 1
             self.idle = False
             self.flip = False
             dx += 5
@@ -70,5 +74,15 @@ class Player(Sprite):
             self.action = action
             self.costume_number = 0
             self.timer = pygame.time.get_ticks()
+
+
+    def shoot_bullet(self, bullet_group):
+        if self.shooting:
+            b = Bullet(
+                self.rect.centerx + self.direction * self.rect.size[0],
+                self.rect.centery,
+                self.direction
+            )
+            bullet_group.add(b)
             
         
