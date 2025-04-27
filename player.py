@@ -28,6 +28,9 @@ class Player(Sprite):
         self.flip = False
         self.shooting = False
         self.direction  = 1
+        self.last_shoot_time = pygame.time.get_ticks()
+        self.ammo = 5
+        self.ammo_charge = True
 
     def draw(self, screen):
         screen.blit(
@@ -77,12 +80,16 @@ class Player(Sprite):
 
 
     def shoot_bullet(self, bullet_group):
-        if self.shooting:
+        if self.shooting and  pygame.time.get_ticks() - self.last_shoot_time > 150 and self.ammo > 0:
+            self.ammo -= 1
+            self.last_shoot_time = pygame.time.get_ticks()
             b = Bullet(
                 self.rect.centerx + self.direction * self.rect.size[0],
                 self.rect.centery,
                 self.direction
             )
             bullet_group.add(b)
+        if self.ammo <= 0 and pygame.time.get_ticks() - self.last_shoot_time >= 10000:
+            self.ammo = 5
             
         
