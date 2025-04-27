@@ -31,6 +31,7 @@ class Player(Sprite):
         self.last_shoot_time = pygame.time.get_ticks()
         self.ammo = 5
         self.ammo_charge = True
+        self.sliding = False
 
     def draw(self, screen):
         screen.blit(
@@ -67,7 +68,12 @@ class Player(Sprite):
             self.shooting = True
         if not keys[pygame.K_SPACE]:
             self.shooting = False
-        
+        if keys[pygame.K_DOWN]:
+            self.sliding = True
+            self.rect.x += 3 * self.direction
+        else:
+            self.sliding = False
+
         self.rect.x += dx
         self.rect.y += dy
 
