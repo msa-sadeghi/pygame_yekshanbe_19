@@ -32,13 +32,14 @@ class Player(Sprite):
         self.ammo = 5
         self.ammo_charge = True
         self.sliding = False
+        self.gravity = 0
+        self.in_air = False
 
     def draw(self, screen):
         screen.blit(
             pygame.transform.flip(self.image, self.flip, False), 
             self.rect)
         self.animation()
-
     def animation(self):
         self.image = self.all_images[self.action][self.costume_number]
         if pygame.time.get_ticks() - self.timer >= 100:# یک دهم ثانیه
@@ -46,7 +47,6 @@ class Player(Sprite):
             self.costume_number += 1
             if self.costume_number >= len(self.all_images[self.action]):
                 self.costume_number = 0
-
     def move(self):
         dx = 0
         dy = 0
@@ -68,11 +68,22 @@ class Player(Sprite):
             self.shooting = True
         if not keys[pygame.K_SPACE]:
             self.shooting = False
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN] and not self.idle:
             self.sliding = True
             self.rect.x += 3 * self.direction
         else:
             self.sliding = False
+
+        if keys[pygame.K_UP] and not self.in_air:
+            self.gravity = -15
+            self.in_air = True
+        dy += self.gravity
+        self.gravity += 1
+        if self.rect.bottom + dy > 500:
+            dy = 500 - self.rect.bottom
+            self.gravity = 0
+            self.in_air = False
+
 
         self.rect.x += dx
         self.rect.y += dy
