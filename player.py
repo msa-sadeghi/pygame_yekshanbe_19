@@ -34,6 +34,7 @@ class Player(Sprite):
         self.sliding = False
         self.gravity = 0
         self.in_air = False
+        self.melee = False
 
     def draw(self, screen):
         screen.blit(
@@ -77,6 +78,11 @@ class Player(Sprite):
         if keys[pygame.K_UP] and not self.in_air:
             self.gravity = -15
             self.in_air = True
+        if keys[pygame.K_m]:
+            self.melee  = True
+        else:
+            self.melee = False
+
         dy += self.gravity
         self.gravity += 1
         if self.rect.bottom + dy > 500:
