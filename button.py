@@ -7,4 +7,4 @@ class Button:
         self.rect = self.image.get_rect(topleft=(x,y))
 
     def draw(self, screen):
-        pass
+        screen.blit(self.image, self.rect)

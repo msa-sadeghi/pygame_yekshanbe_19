@@ -1,5 +1,6 @@
 import pygame
 import os
+from button import Button
 pygame.init()
 
 WIDTH = 1000
@@ -33,13 +34,24 @@ for img in os.listdir("./game_world/Tiles"):
 
 
 
-
 def draw_lines():
     for i in range(COLS + 1):
         pygame.draw.line(screen, "white", (i * TILE_SIZE, 0), (i * TILE_SIZE, HEIGHT))
 
     for i in range(COLS + 1):
         pygame.draw.line(screen, "white", (0, i * TILE_SIZE), (WIDTH, i * TILE_SIZE)) 
+
+buttons_list = []
+r = 0
+c = 0
+
+for img in object_images:
+    btn = Button(img, "object", WIDTH + 20 + c * 70, 20 + r * 70)
+    buttons_list.append(btn)
+    c += 1
+    if c == 5:
+        r += 1
+        c = 0
 
 
 FPS = 60
@@ -53,5 +65,8 @@ while running:
     draw_lines()
     pygame.draw.rect(screen, "lightgreen", (WIDTH, 0, RIGHT_SIDE, HEIGHT + BOTTOM_SIDE))
     pygame.draw.rect(screen, "lightgreen", (0, HEIGHT, WIDTH, BOTTOM_SIDE))
+
+    for btn in buttons_list:
+        btn.draw(screen)
     pygame.display.update()
     clock.tick(FPS)
