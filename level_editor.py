@@ -53,7 +53,13 @@ for img in object_images:
         r += 1
         c = 0
 
-
+for img in tile_images:
+    btn = Button(img, "tile", WIDTH + 20 + c * 70, 20 + r * 70)
+    buttons_list.append(btn)
+    c += 1
+    if c == 5:
+        r += 1
+        c = 0
 FPS = 60
 clock = pygame.time.Clock()
 running = True
