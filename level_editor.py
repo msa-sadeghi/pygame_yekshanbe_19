@@ -61,6 +61,9 @@ for img in tile_images:
         r += 1
         c = 0
 FPS = 60
+
+current_btn_number = 0
+clicked_or_not =  False
 clock = pygame.time.Clock()
 running = True
 while running:
@@ -72,7 +75,11 @@ while running:
     pygame.draw.rect(screen, "lightgreen", (WIDTH, 0, RIGHT_SIDE, HEIGHT + BOTTOM_SIDE))
     pygame.draw.rect(screen, "lightgreen", (0, HEIGHT, WIDTH, BOTTOM_SIDE))
 
-    for btn in buttons_list:
-        btn.draw(screen)
+    for i,btn in enumerate(buttons_list):
+        if btn.draw(screen) == True:
+            current_btn_number = i
+            clicked_or_not = True
+    if clicked_or_not:
+        pygame.draw.rect(screen, "blue", buttons_list[current_btn_number].rect, 3)
     pygame.display.update()
     clock.tick(FPS)
