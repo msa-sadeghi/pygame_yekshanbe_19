@@ -65,6 +65,16 @@ FPS = 60
 current_btn_number = 0
 clicked_or_not =  False
 clock = pygame.time.Clock()
+
+tile_map = []
+for i in range(ROWS):
+    r  = [-1] * COLS
+    tile_map.append(r)
+def show_tiles():
+    for i in range(len(tile_map)):
+        for j in range(len(tile_map[i])):
+            if tile_map[i][j] != -1:
+                screen.blit(buttons_list[tile_map[i][j]].image, (j * TILE_SIZE, i * TILE_SIZE))
 running = True
 while running:
     for event in pygame.event.get():
@@ -81,5 +91,13 @@ while running:
             clicked_or_not = True
     if clicked_or_not:
         pygame.draw.rect(screen, "blue", buttons_list[current_btn_number].rect, 3)
+
+    mouse_pos = pygame.mouse.get_pos()
+    c = mouse_pos[0] // TILE_SIZE
+    r = mouse_pos[1] // TILE_SIZE
+    if mouse_pos[0] < WIDTH and mouse_pos[1] < HEIGHT:
+        if pygame.mouse.get_pressed()[0]:
+            tile_map[r][c] = current_btn_number    
+    show_tiles()
     pygame.display.update()
     clock.tick(FPS)
