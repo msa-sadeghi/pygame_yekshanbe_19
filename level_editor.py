@@ -36,9 +36,9 @@ for img in os.listdir("./game_world/Tiles"):
 
 def draw_lines():
     for i in range(COLS + 1):
-        pygame.draw.line(screen, "white", (i * TILE_SIZE, 0), (i * TILE_SIZE, HEIGHT))
+        pygame.draw.line(screen, "white", (i * TILE_SIZE - scroll, 0), (i * TILE_SIZE -scroll, HEIGHT))
 
-    for i in range(COLS + 1):
+    for i in range(ROWS + 1):
         pygame.draw.line(screen, "white", (0, i * TILE_SIZE), (WIDTH, i * TILE_SIZE)) 
 
 buttons_list = []
@@ -74,17 +74,35 @@ def show_tiles():
     for i in range(len(tile_map)):
         for j in range(len(tile_map[i])):
             if tile_map[i][j] != -1:
-                screen.blit(buttons_list[tile_map[i][j]].image, (j * TILE_SIZE, i * TILE_SIZE))
+                screen.blit(buttons_list[tile_map[i][j]].image, (j * TILE_SIZE - scroll, i * TILE_SIZE))
+
+scroll = 0
+scroll_left, scroll_right = (False, False)
+
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                scroll_left = True
+            if event.key == pygame.K_RIGHT:
+                scroll_right = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                scroll_left = False
+            if event.key == pygame.K_RIGHT:
+                scroll_right = False
     screen.fill("lightpink")
     draw_lines()
+    show_tiles()
     pygame.draw.rect(screen, "lightgreen", (WIDTH, 0, RIGHT_SIDE, HEIGHT + BOTTOM_SIDE))
     pygame.draw.rect(screen, "lightgreen", (0, HEIGHT, WIDTH, BOTTOM_SIDE))
-
+    if scroll_left and scroll > 0:
+        scroll -= 5
+    if scroll_right:
+        scroll += 5
     for i,btn in enumerate(buttons_list):
         if btn.draw(screen) == True:
             current_btn_number = i
@@ -93,11 +111,14 @@ while running:
         pygame.draw.rect(screen, "blue", buttons_list[current_btn_number].rect, 3)
 
     mouse_pos = pygame.mouse.get_pos()
-    c = mouse_pos[0] // TILE_SIZE
+    c = (mouse_pos[0] + scroll) // TILE_SIZE
     r = mouse_pos[1] // TILE_SIZE
     if mouse_pos[0] < WIDTH and mouse_pos[1] < HEIGHT:
         if pygame.mouse.get_pressed()[0]:
-            tile_map[r][c] = current_btn_number    
-    show_tiles()
+            tile_map[r][c] = current_btn_number  
+
+        if pygame.mouse.get_pressed()[2]:
+            tile_map[r][c] = -1  
+    
     pygame.display.update()
     clock.tick(FPS)
