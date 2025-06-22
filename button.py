@@ -5,6 +5,7 @@ class Button:
         self.image = image
         self.type = type
         self.rect = self.image.get_rect(topleft=(x,y))
+        self.locked = False
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -14,6 +15,8 @@ class Button:
             self.image.set_alpha(100)
             if pygame.mouse.get_pressed()[0] == True:
                 clicked = True
+            else:
+                self.locked = False
         else:
             self.image.set_alpha(255)
 

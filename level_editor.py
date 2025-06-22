@@ -78,6 +78,22 @@ def show_tiles():
 
 scroll = 0
 scroll_left, scroll_right = (False, False)
+level_number = 1
+font = pygame.font.SysFont("arial", 28)
+level_text =  font.render(f"level {level_number}", True, "black")
+
+up_image = pygame.image.load("./up.png")
+down_image = pygame.transform.rotate(up_image, 180)
+
+up_button = Button(up_image, "button", 150, HEIGHT + 20)
+down_button = Button(down_image, "button", 250, HEIGHT + 20)
+
+save_image = pygame.image.load("./save_btn.png")
+load_image = pygame.image.load("./load_btn.png")
+
+save_button = Button(save_image, "button", 350, HEIGHT + 30)
+load_button = Button(load_image, "button", 450, HEIGHT + 30)
+
 
 running = True
 while running:
@@ -99,6 +115,20 @@ while running:
     show_tiles()
     pygame.draw.rect(screen, "lightgreen", (WIDTH, 0, RIGHT_SIDE, HEIGHT + BOTTOM_SIDE))
     pygame.draw.rect(screen, "lightgreen", (0, HEIGHT, WIDTH, BOTTOM_SIDE))
+    level_text =  font.render(f"level {level_number}", True, "black")
+    if up_button.draw(screen) and up_button.locked == False:
+
+        level_number += 1
+        up_button.locked = True
+    if down_button.draw(screen) and down_button.locked == False:
+        if level_number > 1:
+            level_number -= 1
+        down_button.locked = True
+    if save_button.draw(screen):
+        pass
+    if load_button.draw(screen):
+        pass
+    screen.blit(level_text, (40, HEIGHT + 40 ))
     if scroll_left and scroll > 0:
         scroll -= 5
     if scroll_right:
